@@ -47,7 +47,7 @@ void setup() {
   
     // Future improvement involves dynamic file names in some way. Possible solution: use the timestamp as the filename, so it will not repeat.
     csv_file_name[0] = 0; // cleaning file name
-    strcat(csv_file_name,"File5.txt"); //append the file extension
+    strcat(csv_file_name,"File2.txt"); //append the file extension
     
     //write csv headers to file:
     log_File = SD.open(csv_file_name, FILE_WRITE);  

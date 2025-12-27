@@ -1,0 +1,9 @@
+File1.TXT was created using the conversion to float as analog_read*(5.00/1023.00). The full scale of 5 V is not the most accurate one once the tension in the Pin 5 V varies. 
+The data generated can be transformed by * (2*ref_vol_div/5) for a better precision..
+Unsolved question: The ref_vol_div itself is using the transformation using the nominal 5V as ref. 
+
+As the Nominal 5 V pin from Arduino varies a bit, using the conversion of ref as 5 V, and then locking all the other measures to the instantaneous measure of the reference voltage seems to be one of the most assertive measurement technique available for this hardware.
+
+
+
+File2.TXT. the version two incorporates the instantaneous correction of the reference voltage.
