@@ -36,7 +36,7 @@ D8
 D12/MISO  - SD module, pin MISO
 D13 	  - SD module, pin SCK
 
-Notes: All voltage dividers are a series circuit using 3 resistor elements. The first is connected to the Arduino 5v pin, and the Analog input. The second is the sensor element, connected to the analog port/the first resistor, and the ground. The measured voltage is for the second element.
+Notes: All voltage dividers are a series circuit using 2 resistor elements. The first is connected to the Arduino 5v pin, and the Analog input. The second is the sensor element, connected to the analog port/the first resistor, and the ground. The measured voltage is for the second element.
 
 The A3 pin is measuring half of the tension from the nominal 5 V pin, so we can reference all other measurements based on that.
 The resistance measured in a voltage divider is R_2 = R_1 . (V_a/(V_0 - V_a)
