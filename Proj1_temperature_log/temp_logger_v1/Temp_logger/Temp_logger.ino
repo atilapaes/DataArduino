@@ -54,7 +54,7 @@ void setup() {
     if (log_File) // it opened OK
     {
       //Serial.println(F("Writing headers to csv file"));
-      log_File.println("dt,bat_v,dht_h,dht_t,ref_v,out_v,therm_v,in_v");
+      log_File.println("dt,bat_v,dht_h,dht_t,ref_v,therm_v,out_v,in_v");
       log_File.close(); 
       //Serial.println("Headers written in SD"); // change for output status with led lights blink or display
     }
@@ -65,7 +65,7 @@ void setup() {
   }
 
   if (serial_mode){
-    Serial.println(F("dt,bat_v,dht_h,dht_t,ref_v,out_v,therm_v,in_v"));  
+    Serial.println(F("dt,bat_v,dht_h,dht_t,ref_v,therm_v,out_v,in_v"));  
   }
 
 }
