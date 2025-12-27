@@ -83,17 +83,17 @@ void loop() {
   int sensor_ref_vol_div = analogRead(A3);
   float ref_vol_div = sensor_ref_vol_div*(5.00/1023.00);
   
-  // Outdoors voltage divider  
-  int sensor_out_vol_div = analogRead(A2);
-  float out_vol_div = sensor_out_vol_div*(5.00/1023.00);
-
   // Therm voltage divider  
-  int sensor_therm_vol_div = analogRead(A1);
-  float them_vol_div = sensor_therm_vol_div*(5.00/1023.00);
+  int sensor_therm_vol_div = analogRead(A2);
+  float therm_vol_div = sensor_therm_vol_div*(2*ref_vol_div/1023.00);
+  
+  // Outdoors voltage divider  
+  int sensor_out_vol_div = analogRead(A1);
+  float out_vol_div = sensor_out_vol_div*(2*ref_vol_div/1023.00);
 
   // Indoors voltage divider  
   int sensor_in_vol_div = analogRead(A0);
-  float in_vol_div = sensor_in_vol_div*(5.00/1023.00);
+  float in_vol_div = sensor_in_vol_div*(2*ref_vol_div/1023.00);
 
   //Generate the timestamp
   timestamp[0] = 0; // Cleaning the array
@@ -133,7 +133,7 @@ void loop() {
   strcat( dataStr, ",");
 
   // Voltage divider with thermistor outdoors
-  dtostrf(them_vol_div, 5, 3, buffer);
+  dtostrf(therm_vol_div, 5, 3, buffer);
   strcat( dataStr, buffer); //append the coverted float
   strcat( dataStr, ","); //append the delimeter
 
@@ -155,7 +155,7 @@ void loop() {
     if (log_File) 
     {
       if (serial_mode){
-        Serial.println(F("Writing to csv.txt"));
+        Serial.println(F("Writing to SD"));
       }
 
       log_File.println(dataStr);  // write the new row in the CSV file

@@ -14,7 +14,7 @@ For the board version V1, the following schematics was used:
 A0 - Voltage divider for the indoors resistor placed close the the hot air vent
 A1 - Voltage divider for the outdoors resistor placed aside from the thermistor
 A2 - Voltage divider of the thermistor circuit
-A3 - (Control) Voltage divider, placed on the breadboard and indoors
+A3 - (Reference) Voltage divider, placed on the breadboard and indoors
 A4
 A5 - Clock module, pin SDA
 A6 - Clock module, pin SCL
