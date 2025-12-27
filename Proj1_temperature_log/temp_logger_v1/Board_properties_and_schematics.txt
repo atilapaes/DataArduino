@@ -1,0 +1,98 @@
+This project uses a Arduino Nano as the main board, and the following components:
+1x DHT11 sensor for humidity and temperature. The 3 pin one was used.
+1x 10k thermistor
+1x SD module and a 16GB SD card
+1x Clock module - Likely DS3231
+7x 10k Ohms resistors
+2x 1M Ohms resistor
+
+
+For the board version V1, the following schematics was used:
+
+
+
+A0 - Voltage divider for the indoors resistor placed close the the hot air vent
+A1 - Voltage divider for the outdoors resistor placed aside from the thermistor
+A2 - Voltage divider of the thermistor circuit
+A3 - (Control) Voltage divider, placed on the breadboard and indoors
+A4
+A5 - Clock module, pin SDA
+A6 - Clock module, pin SCL
+A7 - Voltage divider for the battery level
+
+
+D1/TX
+D0/RX
+D2
+~D3       - DHT11, pin signal 
+D4
+~D5
+~D6
+D7
+D8
+~D9	  - SD module, pin CS  
+~D10/SS
+~D11/MOSI - SD module pin MOSI
+D12/MISO  - SD module, pin MISO
+D13 	  - SD module, pin SCK
+
+Notes: All voltage dividers are a series circuit using 3 resistor elements. The first is connected to the Arduino 5v pin, and the Analog input. The second is the sensor element, connected to the analog port/the first resistor, and the ground. The measured voltage is for the second element.
+
+The A3 pin is measuring half of the tension from the nominal 5 V pin, so we can reference all other measurements based on that.
+The resistance measured in a voltage divider is R_2 = R_1 . (V_a/(V_0 - V_a)
+Where:
+R_2 is the measured resistance of the element.
+R_1 is the resistance of the resistor in the board, and connected to the 5 V pin.
+V_a is the voltage measured in the analog port (ADC).
+V_0 is the voltage provided by the nominal 5 V pin. It is the double of the voltage measured in the pin A3.
+
+
+Following are the resistance measured for the 5 voltage dividers in the board (@20 C, 30% humidity)
+
+
+Pin A0 - Resistor indoors close to the hot air vent
+R_1 = 9.99 kOhms +- 1%
+R_2 = 9.99 kOhms +- 1%
+
+
+Pin A1 - Resistor outdoors
+R1 = 10.01 kOhms +- 1%
+R2 =  9.96 kOhms +- 1%
+
+
+Pin A2 - Voltage divider with thermistor
+R1 = 9.95 kOhms +- 1%
+R2 = 12.85 kOhms (Thermistor @ 20 C)
+
+
+Pin A3 - (Control) Voltage divider
+R_1 = 9.95 kOhms +- 1%
+R_2 = 9.95 kOhms +- 1%
+
+Pin A7 - Voltage divider for the battery level
+R_1 = 1.01 MOhms +- 1%
+R_2 = 1.00 MOhms +- 1%
+
+
+Logged external temperature for the measured day
+
+Day-hour, temperature (C)
+2025-12-23T23, -13
+2025-12-24T00, -13
+2025-12-24T01, -14
+2025-12-24T02, -15
+2025-12-24T03, -15
+2025-12-24T04, -15
+2025-12-24T05, -16
+2025-12-24T06, -16
+2025-12-24T07, -16
+2025-12-24T08, -16
+2025-12-24T09, -17
+2025-12-24T10, -17
+2025-12-24T11, -18
+2025-12-24T12, -17
+2025-12-24T13, -17
+2025-12-24T14, -17
+2025-12-24T15, -17
+2025-12-24T16, -17
+2025-12-24T17, -18
