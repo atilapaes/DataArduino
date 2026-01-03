@@ -21,8 +21,18 @@ char timestamp[20];     // Buffer for the timestamp
 // Modes for testing. serial_mode sends data to the computer, sd_mode writes data in the SD card.
 // serial_mode is used for development and debug, and turned off for running the measurement system.
 // sd_mode is used for writing the data in the SD card. Usefu for development and debug. Mandatory for measurement running log.
-bool serial_mode = false;
+bool serial_mode = true;
 bool sd_mode = true;
+
+// Function for troubleshooting. This function helps to identify errors based in the number of blinks in the buildin LED
+void errorBlinks(int n_blinks, int on_durantion, int off_duration) {
+  for (int i=1; i<= n_blinks; i++) {
+    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(on_durantion);              // wait for a second (1000 milliseconds)
+    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+    delay(off_duration);     
+  }
+}
 
 void setup() {
   Serial.begin(9600);
@@ -30,44 +40,67 @@ void setup() {
 
   // Clock device presence check
   if (! rtc.begin()) {
-    Serial.println(F("RTC Module not found"));
-    while (1); // Halt if no RTC is found  
+    if (serial_mode){
+      Serial.println(F("RTC Module not found"));
+    }
+    // If clock is not present, it will blink two, then a second-long pause
+    while (1) {
+      errorBlinks(2,200,600);
+      delay(1000);
+
+    } // Halt if no RTC is found  
   }
   
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //Sets the RTC to the date & time the sketch was compiled
 
   if (sd_mode) {
     if (SD.begin(chipSelect)) {
-      Serial.println(F("SD card is present & ready"));
+      if (serial_mode){
+        Serial.println(F("SD card is present & ready"));
+      }
     } 
     else {
-      Serial.println(F("SD card missing or failure"));
-      while(1); //halt program
+      if (serial_mode){
+        Serial.println(F("SD card missing or failure"));
+      }
+      // If SD not present, it will blink 3 times
+      while(1) {
+      errorBlinks(3,200,600);
+      delay(1000);
+      } //halt program
     }
-  
+  }
     // Future improvement involves dynamic file names in some way. Possible solution: use the timestamp as the filename, so it will not repeat.
     csv_file_name[0] = 0; // cleaning file name
-    strcat(csv_file_name,"File2.txt"); //append the file extension
+    strcat(csv_file_name,"File3.txt"); //append the file extension
     
     //write csv headers to file:
     log_File = SD.open(csv_file_name, FILE_WRITE);  
     if (log_File) // it opened OK
     {
       //Serial.println(F("Writing headers to csv file"));
-      log_File.println("dt,bat_v,dht_h,dht_t,ref_v,therm_v,out_v,in_v");
+      log_File.println("dt,bat_v,dht_t,dht_h,ref_v,therm_v,out_v,in_v");
       log_File.close(); 
+      
+      // Blink once when writting on SD
+      errorBlinks(1,200,500);
+      delay(1000);
       //Serial.println("Headers written in SD"); // change for output status with led lights blink or display
     }
-    else
-    { 
+    else { 
+      if (serial_mode){
       Serial.println("Error opening csv file");
+      }
+      // If SD not present, it will blink 3 times
+      while(1) {
+      errorBlinks(3,200,600);
+      delay(1000);
+      }
     }
-  }
 
   if (serial_mode){
     Serial.println(F("dt,bat_v,dht_h,dht_t,ref_v,therm_v,out_v,in_v"));  
   }
-
 }
 
 void loop() {
@@ -161,11 +194,10 @@ void loop() {
       log_File.println(dataStr);  // write the new row in the CSV file
       log_File.close(); // Close the CSV file
 
-      // Blink fast if the writing was succeful 
-      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(500);              // wait for a second (1000 milliseconds)
-      digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-      delay(50);              // wait for a second (1000 milliseconds)
+      // Blink once when writting on SD
+      errorBlinks(1,200,400);
+      delay(400);
+
     } 
     else 
     {
@@ -175,9 +207,15 @@ void loop() {
 
       // LED goes on and the program stops if the wirting is unsuccessful
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      while (1);
+      delay(5000);
+      // Blink 3 times in case of SD problems
+      while (1){
+        // If SD not present, it will blink 3 times
+        errorBlinks(3,200,600);
+        delay(1000);
+      }
     }
   }
-  delay(1000);              // wait for a second to start the new measuring ccycle
+  //delay(1000);              // wait for a second to start the new measuring ccycle
 }
 
