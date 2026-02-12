@@ -216,6 +216,5 @@ void loop() {
       }
     }
   }
-  //delay(1000);              // wait for a second to start the new measuring ccycle
+  //delay(1000);               // wait for a second to start the new measuring ccycle
 }
-
